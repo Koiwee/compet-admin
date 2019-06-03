@@ -39,8 +39,9 @@ def competicion_detail(request,pk):
 
 	else:
 		equipos = Equipo.objects.filter(competicion=pk)
-		num_equipos = len(equipos) % 2
-		return render(request, 'competicion/comp_detail.html',{'comp':comp, 'num_equipos':num_equipos})
+		num_equipos = len(equipos)
+		mod_equipos = num_equipos % 2
+		return render(request, 'competicion/comp_detail.html',{'comp':comp, 'num_equipos':num_equipos, 'mod_equipos':mod_equipos})
 
 def add_equipo(request,pk):
 	if request.method == "POST":
