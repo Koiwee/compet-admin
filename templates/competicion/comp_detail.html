@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div>
+		<h1>Competencia: {{ comp.nombre }} </h1>
+		<h4>Del {{ comp.fecha_inicio }}  al {{ comp.fecha_fin }} </h4>
+		<p> <strong>Breve descripción:</strong> {{ comp.descripcion|linebreaksbr }}</p>
+	</div>
+	<br><br>
+
+	<div class="row">
+		<div class="col-md-9">
+			<h2>Equipos en la competencia</h2>
+		</div>
+		<div class="col-md-3" align="right">
+			<h3><a href="{% url 'add_equipo' pk=comp.pk %}" class="btn btn-primary">Agregue un nuevo equipo  <span class="glyphicon glyphicon-plus"></span></a></h3>
+		</div>
+	</div>
+		
+	<table id="list_equipo"> </table>
+	<br>
+	
+		
+	<br><br>
+
+	{% if num_equipos == 1 or num_equipos < 4 %}
+		<div class="alert alert-warning alert-dismissible" align="center">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>¡Advertencia!</strong>
+			<p>Por el momento sólo se pueden generar los enfrentamientos con una cantidad de equipos PAR y a partir de cuatro <strong>(4)</strong> equipos.</p>
+		</div>
+	{% endif %}
+
+	<div class="row">
+		<div class="col-md-4">
+			
+		</div>
+		<div class="col-md-4">
+			<center><a href="{% url 'gen_jornada' pk=comp.pk %}" class="btn btn-info"><h2>Generar jornada</h2></a></center>
+		</div>
+		<div class="col-md-4">
+			
+		</div>
+	</div>
+		
+	
+{% endblock %}
+
+{% block js %}
+	<script>
+		$(function(){
+			$("#list_equipo").bootstrapTable({
+				method:"GET",
+				url:"/api/equipo/listar/{{ comp.pk }}",
+				search:true,
+				columns:[{
+					field:"id",
+					title:"ID",
+				},
+				{
+					field:"nombre",
+					title:"Nombre",
+					formatter: enlace
+				},{
+					field:"responsable",
+					title:"Responsable",
+				},
+				{
+					field:"creacion",
+					title:"Fecha de creación",
+				},{
+					field:"escudo",
+					title:"Escudo",
+					formatter: showImg
+				},]
+			});
+		});
+
+		function enlace(value,row,index){
+			return "<a href='equipo/"+row.id+"/'>" + row.nombre + "</a>";
+		}
+		function showImg(value,row,index){
+			return '<img height="100" width="100" src="{{MEDIA_URL}}'+row.escudo+'">';
+		}
+		
+
+	</script>
+{% endblock %}

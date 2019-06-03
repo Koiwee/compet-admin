@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<br><br><br>
+	<div class="row">
+		<div class="col-md-2">
+			<img height="100" width="100" src="/media/{{equipo.escudo}}">
+		</div>
+		<div class="col-md-8">
+			<h1>Equipo: {{ equipo.nombre }} </h1>
+			<h4>Responsable: {{ equipo.responsable }} </h4>
+			<h4>Creación del equipo: {{ equipo.creacion }} </h4>
+		</div>
+		{% if competicion.programado == False %}
+			<div class="col-md-2" align="center">
+				<a href="{% url 'delete_equipo' pk=equipo.pk %}" class="top-menu"><h2> <span title="Borrar equipo" class="glyphicon glyphicon-trash"></span></h2></a></h3>
+			</div>
+		{%  endif %}
+	</div>
+
+	<br><br><br>
+
+	<div class="row">
+		<div class="col-md-9">
+			<h2>Su lista de jugadores</h2>
+		</div>
+		<div class="col-md-3" align="right">
+			<h3><a href="{% url 'add_jugador' pk=equipo.pk %}" class="btn btn-primary">Agregue un nuevo jugador  <span class="glyphicon glyphicon-plus"></span></a></h3>
+		</div>
+	</div>
+	
+	<table id="list_jugadores"> </table>		
+	
+{% endblock %}
+
+{% block js %}
+	<script>
+		$(function(){
+			$("#list_jugadores").bootstrapTable({
+				method:"GET",
+				url:"/api/jugador/listar/{{ equipo.pk }}/",
+				search:true,
+				columns:[{
+					field:"id",
+					title:"ID",
+				},
+				{
+					field:"nombre",
+					title:"Nombre",
+					formatter: enlace
+				},{
+					field:"dorsal",
+					title:"Dorsal",
+				},
+				{
+					field:"posicion",
+					title:"Posición",
+				},{
+					field:"foto",
+					title:"Foto",
+					formatter: showImg
+				},]
+			});
+		});
+
+		function enlace(value,row,index){
+			return "<a href='jugador/"+row.id+"/'>" + row.nombre + "</a>";
+		}
+		function showImg(value,row,index){
+			return '<img height="100" width="100" src="{{MEDIA_URL}}'+row.foto+'">';
+		}
+
+	</script>
+{% endblock %}

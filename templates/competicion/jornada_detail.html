@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div>
+		<h1>Jornada de la competencia: {{ comp.nombre }} </h1>
+		<h4>Del {{ comp.fecha_inicio }}  al {{ comp.fecha_fin }} </h4>
+		<p> <strong>Breve descripción:</strong> {{ comp.descripcion|linebreaksbr }}</p>
+	</div>
+	<br><br>
+
+	<div class="row">
+		<div class="col-md-9">
+		</div>
+		<div class="col-md-3" align="right">
+			
+		</div>
+	</div>
+	
+	<table id="list_jornada"> </table>		
+{% endblock %}
+
+{% block js %}
+	<script>
+		$(function(){
+			$("#list_jornada").bootstrapTable({
+				method:"GET",
+				url:"/api/jornada/listar/{{ comp.pk }}/",
+				search:true,
+				columns:[
+				{
+					field:"nom_eq1",
+					title:"Equipo 1",
+					formatter: enlace1
+				},{
+					field:"nom_eq2",
+					title:"Equipo 2",
+					formatter: enlace2
+				},
+				{
+					field:"ptsEq1",
+					title:"Pts. Eq. 1",
+				},{
+					field:"ptsEq2",
+					title:"Pts. Eq. 2",
+					
+				},{
+					field:"victoria",
+					title:"Victoria",
+					
+				},{
+					field:"btn_result",
+					title:"Resultados",
+					formatter: boton
+				},]
+			});
+		});
+
+		function enlace1(value,row,index){
+			return "<a href='{% url 'competicion_detail' comp.pk %}equipo/"+row.equipo1+"/'> " + row.nom_eq1 + " </a>";
+		}
+
+		function enlace2(value,row,index){
+			return "<a href='{% url 'competicion_detail' comp.pk %}equipo/"+row.equipo2+"/'>" + row.nom_eq2 + "</a>";
+		}
+
+		function boton(value,row,index){
+			return "<center><a class='btn btn-info' href='{% url 'inicio' %}resultado_partido/" + row.id + "/'>" + row.btn_result + "</a></center>";
+		}
+
+	</script>
+{% endblock %}

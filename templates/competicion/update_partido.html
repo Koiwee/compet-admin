@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <center><h2>Agregue los resultados del partido {{ partido.equipo1 }} VS {{ partido.equipo2 }}</h2></center>
+    <br><br>
+	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+		<div class="row">
+			<div class="col-md-4">
+				
+			</div>
+			<div class="col-md-4" >
+				<div class="form-group">
+				    <label for="{{ form.ptsEq1.id_for_label }}"> Puntos de {{ partido.nom_eq1 }}:</label>
+				    {{ form.ptsEq1 }}
+				</div>
+				<div class="form-group">
+				    <label for="{{ form.ptsEq2.id_for_label }}"> Puntos de {{ partido.nom_eq2 }}:</label>
+				    {{ form.ptsEq2 }}
+				</div>
+				<div class="form-group">
+				    <label for="{{ form.victoria.id_for_label }}"> Ganador:</label>
+				    {{ form.victoria }}
+				</div>
+		        <button type="submit" class="save btn btn-primary">Guardar</button>
+			</div>
+			<div class="col-md-4">
+				
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-4">
+				
+			</div>
+			<div class="col-md-4">
+				
+			</div>
+			<div class="col-md-4">
+				
+			</div>
+		</div>
+    </form>
+{% endblock %}

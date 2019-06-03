@@ -1,0 +1,7 @@
+*.pyc
+*~
+__pycache__
+entorno01
+db.sqlite3
+/media
+.DS_Store

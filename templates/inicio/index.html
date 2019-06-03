@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="jumbotron" style="background-color: #D8D8D8">
+	  <h1 style="font-style: oblique;font-family: fantasy; ">Administrador de Competiciones</h1>
+	  <img height="100%" width="100%" src="/media/gears01.png">
+	  <!--p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p-->
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-9">
+			<h2>Su lista de competiciones</h2>
+		</div>
+		<div class="col-md-3" align="right">
+			<h3><a href="{% url 'add_competicion' %}" class="btn btn-primary" >Agregue una nueva competición  <span class="glyphicon glyphicon-plus"></span></a></h3>
+		</div>
+	</div>
+	
+	<table id="list_competicion"> </table>
+	<br>
+
+	
+	
+	
+{% endblock %}
+
+{% block js %}
+	<script>
+		$(function(){
+			$("#list_competicion").bootstrapTable({
+				method:"GET",
+				url:"/api/competicion/listar/{{ request.user.pk }}",
+				search:true,
+				columns:[{
+					field:"id",
+					title:"ID",
+				},
+				{
+					field:"nombre",
+					title:"Nombre",
+					formatter: enlace2
+				},{
+					field:"descripcion",
+					title:"Descripción",
+				},
+				{
+					field:"fecha_inicio",
+					title:"Fecha de inicio",
+				},{
+					field:"fecha_fin",
+					title:"Fecha final",
+				},]
+			});
+		});
+
+		function enlace2(value,row,index){
+			return "<a href='competicion/"+row.id+"/'>" + row.nombre + "</a>";
+		}
+
+	</script>
+{% endblock %}
