@@ -29,9 +29,10 @@
 			<strong>¡Advertencia!</strong>
 			<p>Por el momento sólo se pueden generar los enfrentamientos con una cantidad de equipos <strong>PAR</strong> y a partir de cuatro <strong>(4)</strong> equipos.</p>
 		</div>
-	{% endif %}
 
-	<div class="row">
+	{%  else %}
+
+		<div class="row">
 		<div class="col-md-4">
 			
 		</div>
@@ -62,6 +63,7 @@
 	    </div>
 	  </div>
 	</div>
+	{% endif %}
 	
 {% endblock %}
 
